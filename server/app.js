@@ -3,6 +3,7 @@ import userRouter from "./routes/user.routes.js";
 import { configDotenv } from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from "cors";
+import { connectMongoDB } from './database/dbConfig.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000
@@ -31,5 +32,6 @@ app.use("/user",userRouter);
 
 
 app.listen(PORT,()=>{
+    connectMongoDB();
     console.log(`server is running on localhost:${PORT}`);
 })
