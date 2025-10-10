@@ -6,6 +6,7 @@ const userProfileSchema = new Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: [true, "User Id is required"],
     },
     fullName: {
@@ -59,10 +60,11 @@ const userProfileSchema = new Schema(
     },
     location: {
       type: String,
-      required: [true, "Location is required"],
+      default:null
     },
     bio: {
       type: String,
+      default:null
     },
     skills: {
       type: [String],
@@ -72,32 +74,7 @@ const userProfileSchema = new Schema(
         message: "At least one skill should be selected",
       },
     },
-    socialLinks: {
-      instagram: {
-        type: String,
-        trim: true,
-        match: [
-          /^https?:\/\/(www\.)?instagram\.com\/[A-Za-z0-9._%-]+$/,
-          "Invalid Instagram URL",
-        ],
-      },
-      linkedin: {
-        type: String,
-        trim: true,
-        match: [
-          /^https?:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9._%-]+$/,
-          "Invalid LinkedIn URL",
-        ],
-      },
-      github: {
-        type: String,
-        trim: true,
-        match: [
-          /^https?:\/\/(www\.)?github\.com\/[A-Za-z0-9._%-]+$/,
-          "Invalid GitHub URL",
-        ],
-      },
-    },
+    
     socialLinks: {
       instagram: {
         type: String,
@@ -137,12 +114,31 @@ const userProfileSchema = new Schema(
         default: new Map(),
       },
     },
+    profilePicture: {
+      type: String,
+      default: ["www.img.common.image.com"],
+    },
 
     savedProject: [{ type: mongoose.Schema.Types.ObjectId }],
     recentProject: [{ type: mongoose.Schema.Types.ObjectId }],
+    isUserLoggedIn: false,
+    isEmailVerified: false,
+    isNumberVerified: false,
+    otp: {
+      type: Number,
+      default: null,
+    },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
+    accessToken: {
+      type: String,
+      default: null,
+    },
   },
 
   { timestamps: true }
 );
 
-export default UserProfile = mongoose.model("UserProfile",userProfileSchema);
+export default UserProfile = mongoose.model("UserProfile", userProfileSchema);

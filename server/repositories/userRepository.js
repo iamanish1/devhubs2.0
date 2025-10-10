@@ -1,0 +1,30 @@
+import User from "../models/userSchema.js";
+
+class userRepository{
+
+    async create(userData) {
+        return await User.create(userData);
+    }
+
+    async findByEmail (email){
+        return await User.findOne({email})
+    }
+
+    async findAll (){
+        return await User.find();
+    }
+
+    async deleteById(id){
+        return await User.findByIdAndDelete(id);
+    }
+
+    async update(id,data){
+        return await User.findByIdAndUpdate(id,data,{new:true});
+    }
+
+    async findById (id) {
+        return await User.findById(id);
+    }
+}
+
+export default userRepository;
