@@ -39,6 +39,12 @@ class UserProfileServices {
     return await this.userProfileRepo.update(id, data);
   }
 
+  async updateUserSkills (id,newSkills){
+    const isUserProfileExists = await this.isUserProfileExists(id);
+    if (!isUserProfileExists) throw new Error("Profile does not exist");
+    return await this.userProfileRepo.updateUserSkills(id, newSkills);
+  }
+
   async isEmailVerified(id) {
     const userProfile = await this.isUserProfileExists(id);
     if (!userProfile) throw new Error("Profile does not exist");

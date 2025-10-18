@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/userProfileController.js";
+import { registerUser } from "../controllers/user/userProfileController.js";
+import { userSkills } from "../controllers/user/skillsController.js";
 
 const router = Router({ mergeParams: true });
 
-router.post("/profile", registerUser);
+router.post("/user", registerUser);
+router.put("/profile/skills",userSkills);
 
 export default router;
