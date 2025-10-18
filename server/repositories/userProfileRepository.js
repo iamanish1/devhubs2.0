@@ -12,8 +12,8 @@ class UserProfileRepository {
   async updateUserSkills(id, newSkills) {
     return await UserProfile.updateOne(
       { _id: id },
-      {$addToSet:{skills:{$each:newSkills}}},
-      {returnOriginal:false}
+      { $addToSet: { skills: { $each: newSkills } } },
+      { returnOriginal: false }
     );
   }
 
@@ -31,6 +31,10 @@ class UserProfileRepository {
 
   async findByUserName(username) {
     return await UserProfile.findOne({ username });
+  }
+
+  async find(params) {
+    return await UserProfile.findOne(params);
   }
 }
 

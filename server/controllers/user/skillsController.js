@@ -4,7 +4,8 @@ const userProfileServices = new UserProfileServices();
 
 export const userSkills = async (req, res) => {
   try {
-    const { id, newSkills } = req.body;
+    const { newSkills } = req.body;
+    const id = req.userId;
     if(newSkills.length === 0) {
       return res.status(401).json({
         success:false,
@@ -13,7 +14,6 @@ export const userSkills = async (req, res) => {
     }
     const user = await userProfileServices.updateUserSkills(id, newSkills);
 
-    console.log("logging",user);
 
     return res.status(200).json({
         success:true,

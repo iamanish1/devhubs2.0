@@ -10,6 +10,10 @@ class UserProfileServices {
     return await this.userProfileRepo.findById(id);
   }
 
+  async getOne(params) {
+    return await this.userProfileRepo.find(params);
+  }
+
   async registerUserProfile(data) {
     const existingUserProfile = await this.userProfileRepo.findByEmail(
       data.email
@@ -20,7 +24,7 @@ class UserProfileServices {
       data.username
     );
     if (userWithUsername) throw new Error("user name must be unique");
-    
+
     if (!roleValidator(data.professionalRole)) {
       throw new Error(`${data.professionalRole} is not allowed`);
     }
@@ -39,7 +43,7 @@ class UserProfileServices {
     return await this.userProfileRepo.update(id, data);
   }
 
-  async updateUserSkills (id,newSkills){
+  async updateUserSkills(id, newSkills) {
     const isUserProfileExists = await this.isUserProfileExists(id);
     if (!isUserProfileExists) throw new Error("Profile does not exist");
     return await this.userProfileRepo.updateUserSkills(id, newSkills);
