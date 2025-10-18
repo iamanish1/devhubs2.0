@@ -33,7 +33,7 @@ const projectListingSchema = new Schema({
         required : [true, "Project Technology Stack is required"],
      }, 
      Project_category : {
-        type : string , 
+        type : String , 
         required : [true, "Project Category is required"],
         enum : ["Free project" , "Funded project" , "capsulated project"], 
      }, 
