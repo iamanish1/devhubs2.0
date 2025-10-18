@@ -8,6 +8,11 @@ class UserServices {
   constructor() {
     this.userRepo = new userRepository();
   }
+
+  async getUser(id) {
+    return await this.userRepo.findById(id);
+  }
+
   async registerUser(data) {
     const existingUser = await this.userRepo.findByEmail(data.email);
     if (existingUser) throw new Error("Email already exist");
@@ -21,7 +26,7 @@ class UserServices {
 
     const newUser = await this.userRepo.create(data);
     const token = generateTokens(newUser);
-    console.log("here comes token",token);
+    console.log("here comes token", token);
 
     verifyEmail(data.email, token.accessToken);
     newUser.accessToken = token.accessToken;
@@ -29,9 +34,6 @@ class UserServices {
     await newUser.save();
     return newUser;
   }
-
-
-
 
   async listUser() {
     return await this.userRepo.findAll();
