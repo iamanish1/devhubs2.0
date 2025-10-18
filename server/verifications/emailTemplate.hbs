@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Confirm Your Email</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #007bff;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-top: 20px;
+      }
+      .footer {
+        margin-top: 40px;
+        font-size: 12px;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Welcome to DevHub!</h2>
+      <p>Hi {{username}},</p>
+      <p>Thanks for signing up. Please confirm your email address by clicking the button below:</p>
+      <a href="https://devhub.com/confirm?token={{token}}" class="button">Confirm Email</a>
+      <p>If the button doesn't work, copy and paste this link into your browser:</p>
+      <p><a href="https://devhub.com/confirm?token={{token}}">https://devhub.com/confirm?token={{token}}</a></p>
+      <div class="footer">
+        <p>Sent by Ankit Yadav from DevHub</p>
+      </div>
+    </div>
+  </body>
+</html>

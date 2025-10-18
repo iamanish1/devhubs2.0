@@ -1,33 +1,29 @@
-import userProfile from "../models/userProfileSchema.js";
+import { UserProfile } from "../models/userProfileSchema.js";
 
 class UserProfileRepository {
+  async create(data) {
+    return await UserProfile.create(data);
+  }
 
-    async create (data) {
-        return await userProfile.create(data);
-    }
+  async update(id, data) {
+    return await UserProfile.findByIdAndUpdate(id, data);
+  }
 
-    async update(id,data){
-        return await userProfile.findByIdAndUpdate(id,data);
-    }
+  async delete(id) {
+    return await UserProfile.findOneAndDelete(id);
+  }
 
-    async delete(id){
-        return await userProfile.findOneAndDelete(id);
-    }
+  async findById(id) {
+    return await UserProfile.findById(id);
+  }
 
-    async findById(id){
-        return await userProfile.findById(id);
-    }
+  async findByEmail(email) {
+    return await UserProfile.findOne({ email });
+  }
 
-    async findByEmail(id){
-        return await userProfile.findOne({email});
-    }
-
-    
-
-
-    
-
-
+  async findByUserName(username) {
+    return await UserProfile.findOne({ username });
+  }
 }
 
 export default UserProfileRepository;

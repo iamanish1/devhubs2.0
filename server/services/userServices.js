@@ -1,15 +1,37 @@
-import userRepository from "../repositories/userRepository";
+import userRepository from "../repositories/userRepository.js";
+import { roleValidator } from "../validators/userValidators.js";
+import jwt from "jsonwebtoken";
+import { verifyEmail } from "../verifications/emailVerification.js";
+import { generateTokens } from "../authServices/generateTokens.js";
 
-class userService {
+class UserServices {
   constructor() {
     this.userRepo = new userRepository();
   }
   async registerUser(data) {
     const existingUser = await this.userRepo.findByEmail(data.email);
     if (existingUser) throw new Error("Email already exist");
+    const userWithSameUsername = await this.userRepo.findByUserName(
+      data.username
+    );
+    if (userWithSameUsername) throw new Error("username is not available");
+    if (!roleValidator(data.professionalRole)) {
+      throw new Error("role is not valid");
+    }
+
     const newUser = await this.userRepo.create(data);
+    const token = generateTokens(newUser);
+    console.log("here comes token",token);
+
+    verifyEmail(data.email, token.accessToken);
+    newUser.accessToken = token.accessToken;
+    newUser.refreshToken = token.refreshToken;
     await newUser.save();
+    return newUser;
   }
+
+
+
 
   async listUser() {
     return await this.userRepo.findAll();
@@ -25,26 +47,10 @@ class userService {
     return await this.userRepo.delete(id);
   }
 
-  async verifyEmail(email) {
-    const user = await this.userRepo.findByEmail(email);
-    if (!user) throw new Error("User not found");
-    user.isEmailVerified = true;
-    await user.save();
-    return user.isEmailVerified === true;
-  }
-
   async isEmailVerified(id) {
     const user = await this.userRepo.findById(id);
     if (!user) throw new Error("User is not present");
     return user.isEmailVerified === true;
-  }
-
-  async verifyNumber(id) {
-    const user = await this.userRepo.findById(id);
-    if (!user) throw new Error("User is not present");
-    user.isNumberVerified = true;
-    await user.save();
-    return user.isNumberVerified === true;
   }
 
   async isNumberVerified(id) {
@@ -67,4 +73,4 @@ class userService {
   }
 }
 
-export default userService;
+export default UserServices;
