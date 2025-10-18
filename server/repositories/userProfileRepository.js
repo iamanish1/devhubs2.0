@@ -17,6 +17,22 @@ class UserProfileRepository {
     );
   }
 
+  async updateSocialLinks(id, newLinks) {
+    console.log("here consoling newLinks",newLinks)
+    const updates = {};
+    for (let [platform, value] of Object.entries(newLinks)) {
+      if (platform === "custom" && value === "object") {
+        for (let [key, url] of Object.entries(value)) {
+          updates[`socialLinks.custom.${(key, value)}`];
+        }
+      }
+
+      updates[`socialLinks.${platform}`] = value;
+    }
+
+    return await UserProfile.updateOne({ _id: id }, { $set: updates });
+  }
+
   async delete(id) {
     return await UserProfile.findOneAndDelete(id);
   }
