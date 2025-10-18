@@ -1,9 +1,8 @@
 import { Router } from "express";
+import { registerUser } from "../controllers/userProfileController.js";
 
-const router = Router({mergeParams:true});
+const router = Router({ mergeParams: true });
 
-router.get("/",(req,res)=>{
-    res.send("Hello server");
-})
+router.post("/profile", registerUser);
 
 export default router;

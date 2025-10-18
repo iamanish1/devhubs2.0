@@ -1,4 +1,5 @@
-import UserProfileRepository from "../repositories/userProfileRepository";
+import UserProfileRepository from "../repositories/userProfileRepository.js";
+import { roleValidator } from "../validators/userValidators.js";
 
 class UserProfileServices {
   constructor() {
@@ -9,12 +10,21 @@ class UserProfileServices {
     return await this.userProfileRepo.findById(id);
   }
 
-  async createUserProfile(data) {
+  async registerUserProfile(data) {
     const existingUserProfile = await this.userProfileRepo.findByEmail(
       data.email
     );
-    if (!existingUserProfile) throw new Error("Email already used");
-    return await this.userProfileRepo.createUserProfile(data);
+    if (existingUserProfile) throw new Error("Email already used");
+
+    const userWithUsername = await this.userProfileRepo.findByUserName(
+      data.username
+    );
+    if (userWithUsername) throw new Error("user name must be unique");
+    
+    if (!roleValidator(data.professionalRole)) {
+      throw new Error(`${data.professionalRole} is not allowed`);
+    }
+    return await this.userProfileRepo.create(data);
   }
 
   async deleteUserProfile(id) {
@@ -65,8 +75,6 @@ class UserProfileServices {
     userProfile.profilePicture = imageLink;
     await userProfile.save();
   }
-
-  
 }
 
 export default UserProfileServices;

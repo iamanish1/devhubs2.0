@@ -24,8 +24,10 @@ app.use(
 //?-------------------------------------------------------------
 //*_______________Routes starts here ________________//
 
-app.use("/user",userRouter);
-
+app.use("/api",userRouter);
+app.get("/",(req,res)=>{
+  res.send("server is working");
+})
 
 
 

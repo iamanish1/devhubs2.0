@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
-import { passwordValidator, roleValidator } from "./validators/userValidators";
+import {
+  passwordValidator,
+  roleValidator,
+} from "../validators/userValidators.js";
 
 const userSchema = new Schema(
   {
@@ -32,15 +35,21 @@ const userSchema = new Schema(
       required: [true, "Password is required"],
       select: false,
       minLength: [8, "Password should at least 8 chars required"],
-      validate: {
-        validator: passwordValidator,
-        message:
-          "Password should contain one Capital letter ,Special Char and Number should 8 words long",
-      },
+      //removed validate because it was causing error in saving when hashed
     },
-    isEmailVerified: false,
-    isUserLoggedIn: false,
-    isNumberVerified: false,
+
+    //using verifiedAt like this because we have some more info that just a boolean
+
+    verifiedAt: {
+      type: Date,
+      default: null,
+    },
+
+    loggedInAt: {
+      type: Date,
+      default: null,
+    },
+
     otp: {
       type: Number,
       default: null,
@@ -59,4 +68,4 @@ const userSchema = new Schema(
   }
 );
 
-export default User = mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);

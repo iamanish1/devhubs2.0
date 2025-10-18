@@ -1,0 +1,1 @@
+export const ALLOWED_ROLES = ["Developer","Designer","Project Owner"];

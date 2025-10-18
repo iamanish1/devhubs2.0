@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
-import { skillsValidator } from "./validators/userValidators";
+import {
+  passwordValidator,
+  roleValidator,
+  skillsValidator,
+} from "../validators/userValidators.js";
 
 const userProfileSchema = new Schema(
   {
@@ -11,7 +15,7 @@ const userProfileSchema = new Schema(
     },
     fullName: {
       type: String,
-      required: [true, "Full name is required"],
+      trim: true,
       minLength: [3, "Name should be more than 3 chars"],
     },
     username: {
@@ -42,17 +46,15 @@ const userProfileSchema = new Schema(
       required: [true, "Password is required"],
       select: false,
       minLength: [8, "Password should at least 8 chars required"],
-      validate: {
-        validator: passwordValidator,
-        message:
-          "Password should contain one Capital letter ,Special Char and Number should 8 words long",
-      },
+      //removed validate because it was causing error in saving when hashed
     },
     mobileNumber: {
       type: String,
-      required: [true, "Phone number is required"],
+      
       unique: true,
       trim: true,
+      sparse: true,
+      
       match: [
         /^[6-9]\d{9}$/,
         "Please enter a valid 10-digit Indian mobile number",
@@ -60,21 +62,17 @@ const userProfileSchema = new Schema(
     },
     location: {
       type: String,
-      default:null
+      default: null,
     },
     bio: {
       type: String,
-      default:null
+      default: null,
     },
     skills: {
       type: [String],
       default: [],
-      validate: {
-        validator: skillsValidator,
-        message: "At least one skill should be selected",
-      },
     },
-    
+
     socialLinks: {
       instagram: {
         type: String,
@@ -115,15 +113,26 @@ const userProfileSchema = new Schema(
       },
     },
     profilePicture: {
-      type: String,
+      type: [],
       default: ["www.img.common.image.com"],
     },
 
     savedProject: [{ type: mongoose.Schema.Types.ObjectId }],
+
     recentProject: [{ type: mongoose.Schema.Types.ObjectId }],
-    isUserLoggedIn: false,
-    isEmailVerified: false,
-    isNumberVerified: false,
+
+    //using verifiedAt like this because we have some more info that just a boolean
+
+    verifiedAt: {
+      type: Date,
+      default: null,
+    },
+
+    loggedInAt: {
+      type: Date,
+      default: null,
+    },
+
     otp: {
       type: Number,
       default: null,
@@ -141,4 +150,4 @@ const userProfileSchema = new Schema(
   { timestamps: true }
 );
 
-export default UserProfile = mongoose.model("UserProfile", userProfileSchema);
+export const UserProfile = mongoose.model("UserProfile", userProfileSchema);
