@@ -9,6 +9,14 @@ class UserProfileRepository {
     return await UserProfile.findByIdAndUpdate(id, data);
   }
 
+  async updateUserSkills(id, newSkills) {
+    return await UserProfile.updateOne(
+      { _id: id },
+      {$addToSet:{skills:{$each:newSkills}}},
+      {returnOriginal:false}
+    );
+  }
+
   async delete(id) {
     return await UserProfile.findOneAndDelete(id);
   }

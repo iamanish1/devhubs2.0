@@ -1,5 +1,5 @@
-import UserServices from "../services/userServices.js";
-import UserProfileServices from "../services/userProfileServices.js";
+import UserServices from "../../services/userServices.js";
+import UserProfileServices from "../../services/userProfileServices.js";
 import bcrypt from "bcrypt";
 
 const userServices = new UserServices();

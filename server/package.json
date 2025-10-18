@@ -1,8 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-
-  "description": "��#\u0000 \u0000d\u0000e\u0000v\u0000h\u0000u\u0000b\u0000s\u00002\u0000.\u00000\u0000\r\u0000 \u0000",
+  "description": "DevHubs 2.0 backend server",
   "homepage": "https://github.com/AnkitYadav0271/devhubs2.0#readme",
   "bugs": {
     "url": "https://github.com/AnkitYadav0271/devhubs2.0/issues"
@@ -16,7 +15,6 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
@@ -29,8 +27,9 @@
     "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.1",
-    "nodemailer": "^7.0.9",
+    "nodemailer": "^7.0.9"
+  },
+  "devDependencies": {
     "nodemon": "^3.1.10"
   }
-
 }
