@@ -4,6 +4,7 @@ import { configDotenv } from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from "cors";
 import { connectMongoDB } from './database/dbConfig.js';
+import projectListingRouter from './routes/ProjectListingRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000
@@ -25,6 +26,7 @@ app.use(
 //*_______________Routes starts here ________________//
 
 app.use("/api",userRouter);
+app.use("/api",projectListingRouter);
 app.get("/",(req,res)=>{
   res.send("server is working");
 })
