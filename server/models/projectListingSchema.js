@@ -32,7 +32,7 @@ const projectListingSchema = new Schema({
         type : [String], 
         required : [true, "Project Technology Stack is required"],
      }, 
-     Project_category : {
+     project_Category : {
         type : String , 
         required : [true, "Project Category is required"],
         enum : ["Free project" , "Funded project" , "capsulated project"], 
@@ -44,34 +44,38 @@ const projectListingSchema = new Schema({
         minLength : [10, "Project Description should be more than 10 chars"],
         maxLength : [1000, "Project Description should be less than 1000 chars"],
      }, 
-     Project_Key_Features : {
-        type : [String], 
+     project_Key_Features : {
+        type : [{
+            type: String,
+            trim: true,
+            minLength: [10, "Each feature should be more than 10 chars"],
+            maxLength: [1000, "Each feature should be less than 1000 chars"]
+        }], 
         required : [true, "Project Key Features is required"],
-        trim : true,
-        minLength : [10, "Project Key Features should be more than 10 chars"],
-        maxLength : [1000, "Project Key Features should be less than 1000 chars"],
      }, 
-     Project_Status : {
+     project_Status : {
         type : String , 
         required : [true, "Project Status is required"],
         enum : ["Active" , "Inactive" , "Completed"], 
      }, 
-     Project_Ideal_Member_looking_For : {
-        type : [String], 
+     project_Ideal_Member_looking_For : {
+        type : [{
+            type: String,
+            trim: true,
+            minLength: [10, "Each member description should be more than 10 chars"],
+            maxLength: [1000, "Each member description should be less than 1000 chars"]
+        }], 
         required : [true, "Project Ideal Member looking For is required"],
-        trim : true,
-        minLength : [10, "Project Ideal Member looking For should be more than 10 chars"],
-        maxLength : [1000, "Project Ideal Member looking For should be less than 1000 chars"],
      }, 
-    Project_github_Repository_Link : {
+    project_github_Repository_Link : {
         type : String,
         required : [true, "Project Github Repository Link is required"],
      }, 
-     Project_Cover_Image : {
+     project_Cover_Image : {
         type : String,
         required : [true, "Project Cover Image is required"],
      }, 
-     Project_Bonus_Per_Contributor : {
+     project_Bonus_Per_Contributor : {
         type : Number , 
         default : 0, 
         min : [0, "Project Bonus Per Contributor should be more than 0"],
