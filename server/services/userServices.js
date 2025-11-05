@@ -1,5 +1,6 @@
 import userRepository from "../repositories/userRepository.js";
 import { roleValidator } from "../validators/userValidators.js";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { verifyEmail } from "../verifications/emailVerification.js";
 import { generateTokens } from "../authServices/generateTokens.js";
@@ -26,7 +27,6 @@ class UserServices {
 
     const newUser = await this.userRepo.create(data);
     const token = generateTokens(newUser);
-    console.log("here comes token", token);
 
     verifyEmail(data.email, token.accessToken);
     newUser.accessToken = token.accessToken;
@@ -61,17 +61,50 @@ class UserServices {
     return user.isNumberVerified === true;
   }
 
-  async loginUser(id) {
-    const user = await this.userRepo.findById(id);
-    if (!user) throw new Error("User is not present");
-    user.isUserLoggedIn = true;
-    return user.isUserLoggedIn === true;
+  async loginUser(email, password) {
+    try {
+      const user = await this.userRepo.findByEmail(email);
+      
+      if (!user) {
+        return {
+          success: false,
+          message: "Email or password is incorrect",
+          user: null,
+        };
+      }
+
+      const checkedPassword = await bcrypt.compare(password, user.password);
+      if (!checkedPassword) {
+        return {
+          success: false,
+          message: "Email or password is incorrect",
+          user: null,
+        };
+      }
+
+      user.loggedInAt = new Date();
+      await user.save();
+      return { success: true, message: "Login successful", user };
+    } catch (error) {
+      
+      return { success: false, message: "Something went wrong", user: null };
+    }
   }
 
-  async isUserLoggedIn(id) {
-    const user = await this.userRepo.findById(id);
-    if (!user) throw new Error("User is not present");
-    return user.isUserLoggedIn === true;
+  async isUserLoggedIn(data) {
+    const { email, password } = data;
+    const user = await this.userRepo.findByEmail(email);
+    if (!user) throw new Error("Email or password is incorrect");
+    const checkPassword = bcrypt.compare(password, user.password);
+    
+    if (!checkPassword) {
+      throw new Error("Email or password is incorrect");
+    }
+
+    user.isUserLoggedIn = Date.now;
+    await user.save();
+
+    return user;
   }
 }
 

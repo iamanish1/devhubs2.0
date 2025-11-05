@@ -6,7 +6,7 @@ class userRepository {
   }
 
   async findByEmail(email) {
-    return await User.findOne({ email });
+    return await User.findOne({ email }).select("+password");
   }
 
   async findAll() {
@@ -25,8 +25,8 @@ class userRepository {
     return await User.findById(id);
   }
 
-  async findByUserName(username){
-    return await User.findOne({username});
+  async findByUserName(username) {
+    return await User.findOne({ username });
   }
 }
 
