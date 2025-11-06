@@ -121,7 +121,7 @@ const userProfileSchema = new Schema(
 
     recentProject: [{ type: mongoose.Schema.Types.ObjectId }],
 
-    //using verifiedAt like this because we have some more info that just a boolean
+    //using verifiedAt like this because we have some more info than just a boolean
 
     verifiedAt: {
       type: Date,

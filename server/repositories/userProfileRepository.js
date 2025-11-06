@@ -18,7 +18,6 @@ class UserProfileRepository {
   }
 
   async updateSocialLinks(id, newLinks) {
-    console.log("here consoling newLinks",newLinks)
     const updates = {};
     for (let [platform, value] of Object.entries(newLinks)) {
       if (platform === "custom" && value === "object") {
