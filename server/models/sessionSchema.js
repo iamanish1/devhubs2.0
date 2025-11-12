@@ -11,6 +11,9 @@ const sessionSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    accessToken: {
+      type: String,
+    },
     ip: {
       type: String,
     },

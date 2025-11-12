@@ -6,11 +6,15 @@ class SessionServices {
   }
 
   async createSession(data) {
-    this.sessionRepo.create(data);
+  return await this.sessionRepo.create(data);
   }
 
-  async deleteSession(data) {
-   return this.sessionRepo.delete(data);
+  async deleteSession(token,userId) {
+  return await this.sessionRepo.delete({accessToken:token,userId});
+  }
+
+  async deleteSessionByIP(data) {
+    return await this.sessionRepo.delete(data);
   }
 
   async findByIp(ip){

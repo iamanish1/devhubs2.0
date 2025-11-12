@@ -10,7 +10,6 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const ip = req.ip;
     const userAgent = req.headers["user-agent"];
-
     if (!email || !password) {
       return res
         .status(400)
@@ -49,16 +48,17 @@ export const loginUser = async (req, res) => {
       maxAge: 90 * 24 * 60 * 60 * 1000,
     });
 
-  const currentDeviceSession =  await sessionServices.findByIp(ip);
-  if(currentDeviceSession) {
-    await sessionServices.deleteSession({ip:ip});
-  }
+    const currentDeviceSession = await sessionServices.findByIp(ip);
+    if (currentDeviceSession) {
+      await sessionServices.deleteSessionByIP({ ip: ip });
+    }
 
     await sessionServices.createSession({
       userId: user._id,
       ip,
       refreshToken,
       userAgent,
+      accessToken,
     });
 
     return res.status(200).json({
