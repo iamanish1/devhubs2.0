@@ -1,27 +1,24 @@
 import SessionServices from "../../services/sessionServices.js";
 import UserServices from "../../services/userServices.js";
 import jwt from "jsonwebtoken";
+import { AppError } from "../../utils/appError.js";
 
 const userServices = new UserServices();
 const sessionServices = new SessionServices();
 
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res,next) => {
   try {
     const { email, password } = req.body;
     const ip = req.ip;
     const userAgent = req.headers["user-agent"];
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ success: false, message: "All fields are required" });
+      return next(new AppError("Email and password or required"))
     }
 
     const result = await userServices.loginUser(email, password);
 
     if (!result.success) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      return next(new AppError("Invalid credentials",401))
     }
 
     const user = result.user;
@@ -68,6 +65,6 @@ export const loginUser = async (req, res) => {
       user,
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return next(error);
   }
 };

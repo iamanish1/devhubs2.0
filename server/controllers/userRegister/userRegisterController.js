@@ -1,6 +1,7 @@
 import UserServices from "../../services/userServices.js";
 import UserProfileServices from "../../services/userProfileServices.js";
 import bcrypt from "bcrypt";
+import { AppError } from "../../utils/appError.js";
 
 const userServices = new UserServices();
 const userProfileServices = new UserProfileServices();
@@ -14,10 +15,7 @@ export const registerUser = async (req, res) => {
       !password.trim() ||
       !professionalRole.trim()
     ) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
+      return next(new AppError("All fields are required"),404);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -42,7 +40,6 @@ export const registerUser = async (req, res) => {
       newUserProfile,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: error.message,

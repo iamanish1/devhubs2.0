@@ -1,4 +1,5 @@
 import { redis } from "../../database/redisConfig.js";
+import { AppError } from "../../utils/appError.js";
 
 export const rateLimit =
   ({ limit = 10, timer = 60, key }) =>
@@ -14,9 +15,7 @@ export const rateLimit =
     if (reqCount > limit) {
       let ttl = await redis.ttl(fullKey);
 
-      return res.status(400).json({
-        message: `To many login request try after ${ttl} seconds`,
-      });
+      return next(new AppError( `To many login request try after ${ttl} seconds`,400));
     }
 
     next();

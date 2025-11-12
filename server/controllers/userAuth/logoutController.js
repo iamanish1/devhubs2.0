@@ -1,9 +1,10 @@
 
 import UserServices from "../../services/userServices.js";
 import jwt from "jsonwebtoken";
+import { AppError } from "../../utils/appError.js";
 
 const userServices = new UserServices();
-export const logoutUser = async (req, res) => {
+export const logoutUser = async (req, res,next) => {
   try {
     const authorization = req.headers["authorization"];
     const token = authorization?.split(" ")[1];
@@ -12,18 +13,12 @@ export const logoutUser = async (req, res) => {
     try {
       const verify = jwt.verify(token, process.env.SECRET_KEY);
     } catch (error) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid token",
-      });
+      return next(new AppError( "Invalid token"),401);
     }
 
     const result = await userServices.logoutUser(token, userId);
     if (!result.deletedCount) {
-      return res.status(400).json({
-        success: false,
-        message: "Logout unsuccessful",
-      });
+      return next(new AppError("Logout unsuccessful"),400);
     } else {
       res.clearCookie("accessToken", {
         httpOnly: true,
