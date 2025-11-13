@@ -1,19 +1,16 @@
 import UserProfileServices from "../../services/userProfileServices.js";
+import { AppError } from "../../utils/appError.js";
 
 const userProfileServices = new UserProfileServices();
 
 export const getProfile = async (req, res) => {
   const { id } = req.params;
   if (!id)
-    return res
-      .status(404)
-      .json({ success: false, message: "id should not be null" });
+    return next(new AppError( "id should not be null"),404);
   try {
     const profile = await userProfileServices.isUserProfileExists(id);
     if (!profile) {
-      return res
-        .status(404)
-        .json({ success: false, message: "can not find profile with id" });
+      return next("can not find profile with provided id",404)
     }
 
     return res.status(200).json({

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import { connectRedis } from "./database/redisConfig.js";
+import { errorHandler } from "./middleware/error/errorHandlerMiddleware.js";
 import { connectMongoDB } from './database/dbConfig.js';
 import projectListingRouter from './routes/ProjectListingRoutes.js';
 
@@ -33,6 +34,13 @@ app.use("/api/auth",authRouter);
 app.get("/", (req, res) => {
   res.send("server is working");
 });
+
+//*__________Centralized Error Handler Middleware starts here___________//
+
+app.use(errorHandler);
+
+//*__________Centralized Error Handler Middleware ends here___________//
+
 
 
 app.listen(PORT, () => {

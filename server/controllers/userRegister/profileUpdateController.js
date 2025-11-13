@@ -1,4 +1,5 @@
 import UserProfileServices from "../../services/userProfileServices.js";
+import { AppError } from "../../utils/appError.js";
 
 
 const userProfileServices = new UserProfileServices();
@@ -12,10 +13,8 @@ export const profileUpdate = async (req, res) => {
   try {
     const profile = await userProfileServices.getOne({ userId: id });
     if (!profile) {
-      return res.status(500).json({
-        success: true,
-        message: "No profile exists",
-      });
+      return next(new AppError( "No profile exists"),404);
+      
     }
 
     const userProfile = await userProfileServices.updateUserProfile(

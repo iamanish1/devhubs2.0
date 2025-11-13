@@ -11,7 +11,6 @@ export const getCurrUser = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.userId = decoded.id;
-    console.log("here is middleware userId", req.userId);
     next();
   } catch (error) {
     return res.status(500).json({

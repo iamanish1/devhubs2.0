@@ -4,7 +4,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { verifyEmail } from "../verifications/emailVerification.js";
 import { generateTokens } from "../authServices/generateTokens.js";
+import SessionServices from "./sessionServices.js";
 
+
+const sessionService = new SessionServices()
 class UserServices {
   constructor() {
     this.userRepo = new userRepository();
@@ -91,21 +94,28 @@ class UserServices {
     }
   }
 
-  async isUserLoggedIn(data) {
-    const { email, password } = data;
-    const user = await this.userRepo.findByEmail(email);
-    if (!user) throw new Error("Email or password is incorrect");
-    const checkPassword = bcrypt.compare(password, user.password);
+  //__________I forgot about below code what i was thinking when writing it ____________//
+
+  // async isUserLoggedIn(data) {
+  //   const { email, password } = data;
+  //   const user = await this.userRepo.findByEmail(email);
+  //   if (!user) throw new Error("Email or password is incorrect");
+  //   const checkPassword = bcrypt.compare(password, user.password);
     
-    if (!checkPassword) {
-      throw new Error("Email or password is incorrect");
-    }
+  //   if (!checkPassword) {
+  //     throw new Error("Email or password is incorrect");
+  //   }
 
-    user.isUserLoggedIn = Date.now;
-    await user.save();
+  //   user.isUserLoggedIn = Date.now;
+  //   await user.save();
 
-    return user;
+  //   return user;
+  // }
+
+  async logoutUser(token,userId){
+  return await sessionService.deleteSession(token,userId)
   }
+
 }
 
 export default UserServices;
